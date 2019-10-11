@@ -1,24 +1,11 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Team Members
+Chris Lin
+Leo Liu
+Ben Yang
+Vincent Cheung
 
-Things you may want to cover:
+2PM Section
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Dinnerpal is a chef-hailing service to help unite hungry people with community-approved chefs in their area. Users can sign up as diners or as chefs. Diners can explore nearby chef listings and book meals. Chefs can list times and cost structures for their services.
