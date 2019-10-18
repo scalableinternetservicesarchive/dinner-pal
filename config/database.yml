@@ -13,6 +13,9 @@ development:
 test:
   <<: *default
   database: dinnerpal_test
+  username: dinnerpal
+  password: password
+  host: localhost
 
 production:
   <<: *default
