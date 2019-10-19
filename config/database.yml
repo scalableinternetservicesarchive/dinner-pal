@@ -2,20 +2,17 @@ default: &default
   adapter: postgresql
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
+  username: dinnerpal
+  password: password
+  host: localhost
 
 development:
   <<: *default
   database: dinnerpal_dev
-  username: dinnerpal
-  password: password
-  host: localhost
 
 test:
   <<: *default
   database: dinnerpal_test
-  username: dinnerpal
-  password: password
-  host: localhost
 
 production:
   <<: *default
