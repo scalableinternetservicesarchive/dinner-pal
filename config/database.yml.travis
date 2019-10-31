@@ -12,7 +12,7 @@ development:
 
 test:
   <<: *default
-  database: dinnerpal_test
+  database: travis_ci_test
 
 production:
   <<: *default
@@ -24,3 +24,4 @@ production:
   password: <%= ENV['RDS_PASSWORD'] %>
   port: <%= ENV['RDS_PORT'] %>
   username: <%= ENV['RDS_USERNAME'] %>
+  
