@@ -7,4 +7,5 @@ Rails.application.routes.draw do
   get  'static_pages/home'
   get  'static_pages/help'
   get '/signup', to: 'users#new'
+  get '/my_listings', to: 'listings#my_listings'
 end
