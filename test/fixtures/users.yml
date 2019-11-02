@@ -2,10 +2,10 @@
 
 one:
   name: MyString
-  eamil: MyString
   role: MyString
+  email: alice@example.com
 
 two:
   name: MyString
-  eamil: MyString
   role: MyString
+  email: bob@example.com
