@@ -11,14 +11,19 @@
     </div>
   <% end %>
 
-  <div class="field">
+  <h1>
+    <%= @listing.title %>
+    <%= @listing.description %>
+  </h1>
+
+  <div class="field hidden">
     <%= form.label :listing_id %>
-    <%= form.number_field :listing_id %>
+    <%= form.number_field :listing_id, value: params[:listing_id] %>
   </div>
 
-  <div class="field">
+  <div class="field hidden">
     <%= form.label :diner_id %>
-    <%= form.number_field :diner_id %>
+    <%= form.number_field :diner_id, value: current_user.id %>
   </div>
 
   <div class="field">

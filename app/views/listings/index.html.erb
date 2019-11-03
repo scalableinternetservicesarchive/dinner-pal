@@ -23,6 +23,7 @@
         <td><%= link_to 'Show', listing %></td>
         <td><%= link_to 'Edit', edit_listing_path(listing) %></td>
         <td><%= link_to 'Destroy', listing, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Create Reservation', new_reservation_path(listing_id: listing.id) %></td>
       </tr>
     <% end %>
   </tbody>
