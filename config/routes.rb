@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   get  'static_pages/help'
   get '/signup', to: 'users#new'
   get '/my_listings', to: 'listings#my_listings'
+  get '/my_reservations', to: 'reservations#my_reservations'
 end

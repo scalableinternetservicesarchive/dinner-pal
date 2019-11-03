@@ -61,6 +61,10 @@ class ReservationsController < ApplicationController
     end
   end
 
+  def my_reservations
+    @my_reservations = current_user.reservations
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_reservation
