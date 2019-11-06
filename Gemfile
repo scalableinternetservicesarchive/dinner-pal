@@ -3,7 +3,6 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.0'
-gem 'bootstrap-sass', '3.4.1'
 # Use PostgreSQL as the database for Active Record
 gem 'pg', '1.1.4'
 # Use Puma as the app server
@@ -23,6 +22,11 @@ gem 'jbuilder', '~> 2.7'
 
 # Use Devise for user authentication
 gem 'devise'
+
+# For Bootstrap 4
+gem 'sprockets-rails'
+gem 'bootstrap'
+gem 'jquery-rails'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
