@@ -1,10 +1,11 @@
 class ReservationsController < ApplicationController
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
-
+  before_action :authorize_user, only: [:show, :edit, :update, :delete]
+  
   # GET /reservations
   # GET /reservations.json
   def index
-    @reservations = Reservation.all
+    @reservations = current_user.reservations
   end
 
   # GET /reservations/1
@@ -67,6 +68,11 @@ class ReservationsController < ApplicationController
   end
 
   private
+    def authorize_user
+      reservation = Reservation.find(params[:id])
+      redirect_to root_url unless current_user.id == reservation.diner_id
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_reservation
       @reservation = Reservation.find(params[:id])

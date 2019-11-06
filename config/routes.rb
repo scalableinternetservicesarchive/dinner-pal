@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
-  resources :reservations
   resources :listings
   devise_for :users
+  authenticate :user do
+    resources :reservations
+  end
   root 'static_pages#home'
   get 'users/new'
   get  'static_pages/home'
