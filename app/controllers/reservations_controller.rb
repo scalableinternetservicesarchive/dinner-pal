@@ -15,8 +15,8 @@ class ReservationsController < ApplicationController
 
   # GET /reservations/new
   def new
-    @listing = Listing.find(params[:listing_id])
     @reservation = Reservation.new
+    @reservation.listing_id = params[:listing_id]
   end
 
   # GET /reservations/1/edit

@@ -12,8 +12,8 @@
   <% end %>
 
   <h1>
-    <%= @listing.title %>
-    <%= @listing.description %>
+    <%= @reservation.listing.title %>
+    <%= @reservation.listing.description %>
   </h1>
 
   <div class="field hidden">
@@ -23,7 +23,7 @@
 
   <div class="field hidden">
     <%= form.label :diner_id %>
-    <%= form.number_field :diner_id, value: current_user.id %>
+    <%= form.number_field :diner_id, value: @current_user.id %>
   </div>
 
   <div class="field">

@@ -1,8 +1,15 @@
 require 'test_helper'
 
 class ListingsControllerTest < ActionDispatch::IntegrationTest
+
+  include Warden::Test::Helpers
+
   setup do
     @listing = listings(:one)
+    @user = users(:one)
+    @user.confirmed_at = Time.now
+    @user.save
+    login_as(@user, :scope => :user)
   end
 
   test "should get index" do

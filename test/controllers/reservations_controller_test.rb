@@ -1,8 +1,15 @@
 require 'test_helper'
 
 class ReservationsControllerTest < ActionDispatch::IntegrationTest
+
+  include Warden::Test::Helpers
+
   setup do
     @reservation = reservations(:one)
+    @user = users(:one)
+    @user.confirmed_at = Time.now
+    @user.save
+    login_as(@user, :scope => :user)
   end
 
   test "should get index" do
@@ -11,7 +18,7 @@ class ReservationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get new" do
-    get new_reservation_url
+    get new_reservation_url(listing_id: @reservation.listing_id)
     assert_response :success
   end
 
