@@ -23,6 +23,10 @@ gem 'jbuilder', '~> 2.7'
 # Use Devise for user authentication
 gem 'devise'
 
+# Use PgSearch for full-text search
+# https://www.viget.com/articles/implementing-full-text-search-in-rails-with-postgres/
+gem 'pg_search'
+
 # For Bootstrap 4
 gem 'sprockets-rails'
 gem 'bootstrap'
