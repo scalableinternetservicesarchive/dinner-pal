@@ -20,6 +20,9 @@ gem 'jbuilder', '~> 2.7'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+# windows compatibility
+gem 'wdm', '>= 0.1.0' if Gem.win_platform?
+
 # Use Devise for user authentication
 gem 'devise'
 
