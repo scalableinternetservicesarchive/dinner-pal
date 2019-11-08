@@ -13,25 +13,25 @@
 
   <div class="field">
     <%= form.label :title %>
-    <%= form.text_field :title %>
+    <%= form.text_field :title, class: 'form-control' %>
   </div>
 
   <div class="field">
     <%= form.label :description %>
-    <%= form.text_area :description %>
+    <%= form.text_area :description, class: 'form-control' %>
   </div>
 
-  <div class="field hidden">
+  <div class="field d-none">
     <%= form.label :chef_id %>
     <%= form.number_field :chef_id, value: @current_user.id %>
   </div>
 
   <div class="field">
     <%= form.label :location %>
-    <%= form.text_field :location %>
+    <%= form.text_field :location, class: 'form-control' %>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit class: 'btn btn-primary' %>
   </div>
 <% end %>

@@ -11,17 +11,25 @@
     </div>
   <% end %>
 
-  <h1>
-    <%= @reservation.listing.title %>
-    <%= @reservation.listing.description %>
-  </h1>
+  <div>
+    <strong>Title: </strong><%= @reservation.listing.title %>
+  </div>
+  <div>
+    <strong>Description: </strong><%= @reservation.listing.description %>
+  </div>
+  <div>
+    <strong>Location: </strong><%= @reservation.listing.location %>
+  </div>
+  <div>
+    <strong>Chef: </strong><%= @reservation.listing.user.name %>
+  </div>
 
-  <div class="field hidden">
+  <div class="field d-none">
     <%= form.label :listing_id %>
     <%= form.number_field :listing_id, value: params[:listing_id] %>
   </div>
 
-  <div class="field hidden">
+  <div class="field d-none">
     <%= form.label :diner_id %>
     <%= form.number_field :diner_id, value: @current_user.id %>
   </div>
@@ -37,6 +45,6 @@
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit class: 'btn btn-primary' %>
   </div>
 <% end %>
