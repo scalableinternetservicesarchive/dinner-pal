@@ -17,6 +17,14 @@ class ListingsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should search listings" do
+    get listings_url, params: { query: 'MyText' }
+    assert_response :success
+    assert_select "tbody" do
+      assert_select "tr", 2
+    end
+  end
+
   test "should get new" do
     get new_listing_url
     assert_response :success
