@@ -15,6 +15,7 @@ class ReservationsController < ApplicationController
 
   # GET /reservations/new
   def new
+    @current_user = current_user
     @reservation = Reservation.new
     @reservation.listing_id = params[:listing_id]
   end
