@@ -14,11 +14,13 @@ class ListingsController < ApplicationController
 
   # GET /listings/new
   def new
+    @current_user = current_user
     @listing = Listing.new
   end
 
   # GET /listings/1/edit
   def edit
+    @current_user = current_user
   end
 
   # POST /listings
