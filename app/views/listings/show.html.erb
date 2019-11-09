@@ -1,24 +1,22 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Title:</strong>
-  <%= @listing.title %>
-</p>
+<h1><%= @listing.title %></h1>
+
+<hr />
 
 <p>
-  <strong>Description:</strong>
-  <%= @listing.description %>
-</p>
-
-<p>
-  <strong>Chef:</strong>
-  <%= @listing.chef_id %>
-</p>
-
-<p>
-  <strong>Location:</strong>
   <%= @listing.location %>
 </p>
+
+<p>
+  Hosted by <%= @listing.user.name %>
+</p>
+
+<hr />
+
+<p><%= @listing.description %></p>
+
+<hr />
 
 <%= link_to 'Edit', edit_listing_path(@listing) %> |
 <%= link_to 'Back', listings_path %>
