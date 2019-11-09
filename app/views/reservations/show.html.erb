@@ -1,24 +1,28 @@
 <p id="notice"><%= notice %></p>
 
+<%= @reservation.start_time.strftime("%a, %b %d") %>
+<h1><%= @reservation.listing.title %></h1>
+
 <p>
-  <strong>Listing:</strong>
-  <%= @reservation.listing_id %>
+  <%= @reservation.start_time.strftime("%l:%M:%S %p") %> to <%= @reservation.end_time.strftime("%l:%M:%S %p") %>
+</p>
+
+<hr />
+
+<p>
+  <%= @reservation.listing.location %>
 </p>
 
 <p>
-  <strong>Diner:</strong>
-  <%= @reservation.diner_id %>
+  Hosted by <%= @reservation.listing.user.name %>
 </p>
 
-<p>
-  <strong>Start time:</strong>
-  <%= @reservation.start_time %>
-</p>
+<hr />
 
-<p>
-  <strong>End time:</strong>
-  <%= @reservation.end_time %>
-</p>
+<p><%= @reservation.listing.description %></p>
+
+<hr />
+
 
 <%= link_to 'Edit', edit_reservation_path(@reservation) %> |
 <%= link_to 'Back', reservations_path %>
