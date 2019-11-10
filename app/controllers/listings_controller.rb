@@ -4,11 +4,7 @@ class ListingsController < ApplicationController
   # GET /listings
   # GET /listings.json
   def index
-    if params[:query].present?
-      @listings = Listing.search_for(params[:query])
-    else
-      @listings = Listing.all
-    end
+    @listings = current_user.listings
   end
 
   # GET /listings/1
@@ -67,8 +63,12 @@ class ListingsController < ApplicationController
     end
   end
 
-  def my_listings
-    @my_listings = current_user.listings
+  def browse
+    if params[:query].present?
+      @listings = Listing.search_for(params[:query])
+    else
+      @listings = Listing.all
+    end
   end
 
   private

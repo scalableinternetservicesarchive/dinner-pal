@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Find a dinner pal</h1>
+
+<table class='table'>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Chef</th>
+      <th>Location</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @listings.each do |listing| %>
+      <tr>
+        <td><%= listing.title %></td>
+        <td><%= listing.description %></td>
+        <td><%= listing.user.name %></td>
+        <td><%= listing.location %></td>
+        <td><%= link_to 'More details', listing %></td>
+        <!-- <td><%= link_to 'Edit', edit_listing_path(listing) %></td>
+        <td><%= link_to 'Destroy', listing, method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
+        <td><%= link_to 'Reserve now', new_reservation_path(listing_id: listing.id) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'Create a listing', new_listing_path %>
