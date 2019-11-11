@@ -1,3 +1,7 @@
+<h1>Editing User</h1>
+
+<br>
+
 <%= form_with(model: @user, url: admin_user_path, local: true) do |form| %>
 
   <% if @user.errors.any? %>
@@ -16,7 +20,7 @@
   <% @user.attributes.each do |key, value| %>
     <tr>
       <td><%= key %></td>
-      <% if key.to_sym.in?(@indexes) %>
+      <% if key.to_sym.in?(@read_only_fields) %>
         <td><%= form.text_field key.to_sym, value: value, disabled: true %><td>
       <% else %>
         <td><%= form.text_field key.to_sym, value: value %><td>
@@ -25,7 +29,11 @@
   <% end %>
   </table>
 
-  <div class="actions">
-    <%= form.submit class: 'btn btn-primary' %>
+  <br>
+  
+  <div class='actions'>
+    <%= form.submit %>
   </div>
 <% end %>
+
+<%= link_to 'Cancel edit', admin_user_path(@user) %>
