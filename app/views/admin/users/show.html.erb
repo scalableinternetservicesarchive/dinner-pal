@@ -1,3 +1,5 @@
+<h1>User</h1>
+<br>
 <table>
 <% @user.attributes.each do |key, value| %>
   <tr>
@@ -6,8 +8,46 @@
   </tr>
 <% end %>
 </table>
-
+<br>
+<%= link_to 'Edit', edit_admin_user_path(@user) %> | 
+<%= link_to 'All users', admin_users_path %>
+<hr>
 <br>
 
-<%= link_to 'Edit', edit_admin_user_path(@user) %> |
-<%= link_to 'Back', admin_users_path %>
+<br>
+<br>
+
+<h1>Listings</h1>
+<br>
+<% @user.listings.each do |listing| %>
+  <table>
+  <% listing.attributes.each do |key, value| %>
+    <tr>
+      <td><%= key %></td>
+      <td><%= value %></td>
+    </tr>
+  <% end %>
+  </table>
+  <br>
+  <%= link_to 'Edit', edit_admin_reservation_path(listing) %>
+  <hr>
+<% end %>
+
+<br>
+<br>
+
+<h1>Reservations</h1>
+<br>
+<% @user.reservations.each do |reservation| %>
+  <table>
+  <% reservation.attributes.each do |key, value| %>
+    <tr>
+      <td><%= key %></td>
+      <td><%= value %></td>
+    </tr>
+  <% end %>
+  </table>
+  <br>
+  <%= link_to 'Edit', edit_admin_reservation_path(reservation) %>
+  <hr>
+<% end %>

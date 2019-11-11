@@ -1,0 +1,17 @@
+<h1>Reservation</h1>
+
+<br>
+
+<table>
+<% @reservation.attributes.each do |key, value| %>
+  <tr>
+    <td><%= key %></td>
+    <td><%= value %></td>
+  </tr>
+<% end %>
+</table>
+
+<br>
+
+<%= link_to 'Edit', edit_admin_reservation_path(@reservation) %> | 
+<%= link_to 'All reservations', admin_reservations_path %>

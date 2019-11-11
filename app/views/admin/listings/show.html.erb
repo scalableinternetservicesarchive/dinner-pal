@@ -1,0 +1,17 @@
+<h1>Listing</h1>
+
+<br>
+
+<table>
+<% @listing.attributes.each do |key, value| %>
+  <tr>
+    <td><%= key %></td>
+    <td><%= value %></td>
+  </tr>
+<% end %>
+</table>
+
+<br>
+
+<%= link_to 'Edit', edit_admin_listing_path(@listing) %> | 
+<%= link_to 'All listings', admin_listings_path%>
