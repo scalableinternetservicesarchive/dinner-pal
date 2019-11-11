@@ -1,15 +1,15 @@
-<h1>Editing User</h1>
+<h1>Editing Reservation</h1>
 
 <br>
 
-<%= form_with(model: @user, url: admin_user_path, local: true) do |form| %>
+<%= form_with(model: @reservation, url: admin_reservation_path, local: true) do |form| %>
 
-  <% if @user.errors.any? %>
+  <% if @reservation.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this listing from being saved:</h2>
+      <h2><%= pluralize(@reservation.errors.count, "error") %> prohibited this listing from being saved:</h2>
 
       <ul>
-        <% @user.errors.full_messages.each do |message| %>
+        <% @reservation.errors.full_messages.each do |message| %>
           <li><%= message %></li>
         <% end %>
       </ul>
@@ -17,7 +17,7 @@
   <% end %>
 
   <table>
-  <% @user.attributes.each do |key, value| %>
+  <% @reservation.attributes.each do |key, value| %>
     <tr>
       <td><%= key %></td>
       <% if key.to_sym.in?(@read_only_fields) %>
@@ -36,5 +36,5 @@
   </div>
 <% end %>
 
-<%= button_to 'Destroy', admin_user_path(@user), method: :delete %>
+<%= button_to 'Destroy', admin_reservation_path(@reservation), method: :delete %>
 <%= link_to 'Back', :back %>
