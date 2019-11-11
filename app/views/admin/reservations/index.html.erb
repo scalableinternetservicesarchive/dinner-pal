@@ -1,1 +1,13 @@
-<%= render 'admin/admin_index', heading: 'Reservations', items: @reservations %>
+<%= render 'admin/admin_index' %>
+
+<% @reservations.each do |reservation| %>
+  <table>
+  <% reservation.attributes.each do |key, value| %>
+    <tr>
+      <td><%= key %></td>
+      <td><%= value %></td>
+    </tr>
+  <% end %>
+  </table>
+  <hr>
+<% end %>
