@@ -1,0 +1,31 @@
+<%= form_with(model: @user, url: admin_user_path, local: true) do |form| %>
+
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this listing from being saved:</h2>
+
+      <ul>
+        <% @user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <table>
+  <% @user.attributes.each do |key, value| %>
+    <tr>
+      <td><%= key %></td>
+      <% if key.to_sym.in?(@indexes) %>
+        <td><%= form.text_field key.to_sym, value: value, disabled: true %><td>
+      <% else %>
+        <td><%= form.text_field key.to_sym, value: value %><td>
+      <% end %>
+    </tr>
+  <% end %>
+  </table>
+
+  <div class="actions">
+    <%= form.submit class: 'btn btn-primary' %>
+  </div>
+<% end %>

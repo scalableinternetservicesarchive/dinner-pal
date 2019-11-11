@@ -67,7 +67,7 @@ class ReservationsController < ApplicationController
   private
     def authorize_user
       reservation = Reservation.find(params[:id])
-      redirect_to root_url unless current_user.id == reservation.diner_id
+      redirect_to root_url, alert: 'You cannot view this page.' unless current_user.id == reservation.diner_id
     end
 
     # Use callbacks to share common setup or constraints between actions.

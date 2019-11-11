@@ -1,1 +1,15 @@
-<%= render 'admin/admin_index', heading: 'Users', items: @users %>
+<%= render 'admin/admin_index' %>
+
+<% @users.each do |user| %>
+  <table>
+  <% user.attributes.each do |key, value| %>
+    <tr>
+      <td><%= key %></td>
+      <td><%= value %></td>
+    </tr>
+  <% end %>
+  </table>
+  <br>
+  <%= link_to 'Edit', edit_admin_user_path(user) %>
+  <hr>
+<% end %>
