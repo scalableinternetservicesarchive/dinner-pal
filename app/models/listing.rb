@@ -9,4 +9,9 @@ class Listing < ApplicationRecord
   def set_default_availability
     self[:reserved?] ||= false
   end
+
+  def set_availability(reserved)
+    self[:reserved?] = reserved
+    self.save
+  end
 end
