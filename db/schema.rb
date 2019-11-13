@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_10_001213) do
+ActiveRecord::Schema.define(version: 2019_11_13_063319) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,8 @@ ActiveRecord::Schema.define(version: 2019_11_10_001213) do
     t.string "location"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "reserved?"
+    t.index ["reserved?"], name: "index_listings_on_reserved?"
   end
 
   create_table "reservations", force: :cascade do |t|

@@ -63,7 +63,7 @@ class ReservationsController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
+
   private
     def authorize_user
       reservation = Reservation.find(params[:id])
