@@ -4,7 +4,8 @@ class ListingsController < ApplicationController
   # GET /listings
   # GET /listings.json
   def index
-    @listings = current_user.available_listings
+    @available_listings = current_user.available_listings
+    @reserved_listings = current_user.reserved_listings
   end
 
   # GET /listings/1
