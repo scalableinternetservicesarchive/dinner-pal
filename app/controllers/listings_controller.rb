@@ -4,7 +4,7 @@ class ListingsController < ApplicationController
   # GET /listings
   # GET /listings.json
   def index
-    @listings = current_user.listings
+    @listings = current_user.available_listings
   end
 
   # GET /listings/1

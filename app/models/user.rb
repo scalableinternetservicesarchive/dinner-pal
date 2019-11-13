@@ -11,7 +11,15 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :confirmable, :lockable
-         
+
   has_many :listings, foreign_key: 'chef_id'
   has_many :reservations, foreign_key: 'diner_id'
+
+  def available_listings
+    listings.where(reserved?: false)
+  end
+
+  def reserved_listings
+    listings.where(reserved?: true)
+  end
 end
