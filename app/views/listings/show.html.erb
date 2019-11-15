@@ -10,6 +10,20 @@
 
 <h2>Location</h2>
 <p>
+  <div class="row text-center text-lg-left">
+  	<% @listing.images.each do |image| %>
+      <div class="col-lg-3 col-md-4 col-6">
+        <div class="d-block mb-4 h-100">
+          <%= image_tag image, :class => 'img-fluid img-thumbnail' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</p>
+
+<p>
+
+<p>
   <%= @listing.location %>
 </p>
 
