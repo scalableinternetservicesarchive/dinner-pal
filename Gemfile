@@ -23,6 +23,9 @@ gem 'jbuilder', '~> 2.7'
 # Use Devise for user authentication
 gem 'devise'
 
+# Use aws for image uploading
+gem "aws-sdk-s3", require: false
+
 # Use PgSearch for full-text search
 # https://www.viget.com/articles/implementing-full-text-search-in-rails-with-postgres/
 gem 'pg_search'
