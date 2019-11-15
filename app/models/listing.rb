@@ -1,6 +1,7 @@
 class Listing < ApplicationRecord
   belongs_to :user, foreign_key: 'chef_id'
   has_many :reservations, foreign_key: 'listing_id'
+  has_many :reviews, foreign_key: 'listing_id'
   after_initialize :set_default_availability, :if => :new_record?
 
   include PgSearch::Model
