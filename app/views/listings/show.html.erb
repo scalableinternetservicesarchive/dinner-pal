@@ -22,32 +22,14 @@
 <h2>Description</h2>
 <p><%= @listing.description %></p>
 
-<hr />
-<h3>Leave a review!</h3>
-<%= render 'reviews/form', review: Review.new %>
-
-<!-- <h3>Leave a review!</h3>
-<form action="/reviews" method="post" id="review_form">
-  <label>How many stars? 1-5 </label>
-  <input type="hidden" name="listing_id" value=<%= @listing.id %>>
-  <input type="radio" name="rating" value=1> 1<br>
-  <input type="radio" name="rating" value=2> 2<br>
-  <input type="radio" name="rating" value=3> 3<br>
-  <input type="radio" name="rating" value=4> 4<br>
-  <input type="radio" name="rating" value=5> 5<br>
-  <textarea rows="4" cols="50" name="content" form="reivew_form" placeholder="Type your review here!">
-  </textarea>
-  <br>
-  <input type="submit" value="Submit Review">
-</form> -->
 <h2>Reviews</h2>
 
 <% if @reviews.length > 0 %>
     <% @reviews.each do |review| %>
       <hr />
-      <%= review.user.name %> <br>
-      <%= review.rating %> <br>
-      <%= review.content %> <br>
+      Reviewer: <%= review.user.name %> <br>
+      Rating: <%= review.rating %> <br>
+      Content: <%= review.content %> <br>
     <% end %>
 <% end %>
 

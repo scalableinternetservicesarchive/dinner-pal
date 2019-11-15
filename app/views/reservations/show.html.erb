@@ -1,6 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<%= @reservation.start_time.strftime("%a, %b %d") %>
+<h2><%= @reservation.start_time.strftime("%a, %b %d") %></h2>
 <h1><%= @reservation.listing.title %></h1>
 
 <p>
@@ -20,6 +20,12 @@
 <hr />
 
 <p><%= @reservation.listing.description %></p>
+
+<% if @reservation.end_time.past? %>
+  <hr />
+  <h3>Leave a review!</h3>
+  <%= render 'reviews/form', review: Review.new %>
+<% end %>
 
 <hr />
 
