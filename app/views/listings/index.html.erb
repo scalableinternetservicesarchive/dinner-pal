@@ -17,6 +17,7 @@
   <table class='table'>
     <thead>
       <tr>
+        <th></th>
         <th>Title</th>
         <th>Description</th>
         <th>Location</th>
@@ -27,6 +28,32 @@
     <tbody>
       <% @reserved_listings.each do |listing| %>
         <tr>
+          <td id="reserved_<%= listing.id %>" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner" style="width: 36vw; height: 32vh">
+              <ol class="carousel-indicators">
+                <% listing.images.each_with_index do |image, i| %>
+                  <li data-target="#reserved_<%= listing.id %>" data-slide-to="<%= i %>" <% if i == 0 %>class="active"<% end %>></li>
+                <% end %>
+              </ol>
+
+              <% listing.images.each_with_index do |image, i| %>
+                <div class="carousel-item <% if i == 0 %>active<% end %> w-100 h-100" >
+                  <div class="d-block w-100 h-100">
+                    <%= image_tag image, class: 'img-fluid img-thumbnail', style: 'object-fit: cover; width: 100%; height: 100%' %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+            <a class="carousel-control-prev" href="#reserved_<%= listing.id %>" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#reserved_<%= listing.id %>" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </td>
+
           <td><%= listing.title %></td>
           <td><%= listing.description %></td>
           <td><%= listing.location %></td>
@@ -47,6 +74,7 @@
   <table class='table'>
     <thead>
       <tr>
+        <th></th>
         <th>Title</th>
         <th>Description</th>
         <th>Location</th>
@@ -57,6 +85,32 @@
     <tbody>
       <% @available_listings.each do |listing| %>
         <tr>
+          <td id="available_<%= listing.id %>" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner" style="width: 36vw; height: 32vh">
+              <ol class="carousel-indicators">
+                <% listing.images.each_with_index do |image, i| %>
+                  <li data-target="#available_<%= listing.id %>" data-slide-to="<%= i %>" <% if i == 0 %>class="active"<% end %>></li>
+                <% end %>
+              </ol>
+
+              <% listing.images.each_with_index do |image, i| %>
+                <div class="carousel-item <% if i == 0 %>active<% end %> w-100 h-100" >
+                  <div class="d-block w-100 h-100">
+                    <%= image_tag image, class: 'img-fluid img-thumbnail', style: 'object-fit: cover; width: 100%; height: 100%' %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+            <a class="carousel-control-prev" href="#available_<%= listing.id %>" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#available_<%= listing.id %>" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </td>
+
           <td><%= listing.title %></td>
           <td><%= listing.description %></td>
           <td><%= listing.location %></td>
