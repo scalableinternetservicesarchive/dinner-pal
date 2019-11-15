@@ -22,4 +22,9 @@ class User < ApplicationRecord
   def reserved_listings
     listings.where(reserved?: true)
   end
+
+  protected
+  def confirmation_required?
+    false
+  end
 end

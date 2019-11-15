@@ -11,6 +11,8 @@ class ListingsController < ApplicationController
   # GET /listings/1
   # GET /listings/1.json
   def show
+    @reviews = @listing.reviews
+    @current_user = current_user
   end
 
   # GET /listings/new

@@ -1,9 +1,14 @@
+<head>
+  <%= csrf_meta_tags %>
+</head>
+
 <p id="notice"><%= notice %></p>
 
 <h1><%= @listing.title %></h1>
 
 <hr />
 
+<h2>Location</h2>
 <p>
   <div class="row text-center text-lg-left">
   	<% @listing.images.each do |image| %>
@@ -28,7 +33,19 @@
 
 <hr />
 
+<h2>Description</h2>
 <p><%= @listing.description %></p>
+
+<h2>Reviews</h2>
+
+<% if @reviews.length > 0 %>
+    <% @reviews.each do |review| %>
+      <hr />
+      Reviewer: <%= review.user.name %> <br>
+      Rating: <%= review.rating %> <br>
+      Content: <%= review.content %> <br>
+    <% end %>
+<% end %>
 
 <hr />
 
