@@ -128,17 +128,17 @@
       </transaction>
     </session>
     
-    <!-- Create a Listing -->
-    <session name="Create a Listing" weight="1" type="ts_http">
-      <!-- User signs in -->
-      <transaction name="sign_in">
+    <!-- View My Listings -->
+    <session name="View My Listings" weight="1" type="ts_http">
+      <!-- User loads signs in page -->
+      <transaction name="sign_in_view_listings">
         <request>
           <dyn_variable name="authenticity_token" />
           <http url='/users/sign_in' version='1.1' method='GET'></http>
         </request>
       </transaction>
 
-      <!-- User waits at login page for ~3 seconds, thinking of username and pass -->
+      <!-- User waits at login page for 3 seconds, thinking of username and pass -->
       <thinktime value="3" random="true" />
 
       <!-- encode authenticity_token -->
@@ -160,6 +160,55 @@
           contents='authenticity_token=%%_encoded_authenticity_token%%&amp;user%5Bemail%5D=tsung%%user_email_num%%@dinner-pal.com&amp;user%5Bpassword%5D=password'
           ></http>
       </request>
-    </session>    
+
+      <transaction>
+        <request subst="true">
+          <http url='/listings' method='GET'></http>
+        </request>
+      </transaction>
+      
+    </session>
+    
+    <!-- View My Reservations -->
+    <session name="View My Reservations" weight="1" type="ts_http">
+      <!-- User loads signs in page -->
+      <transaction name="sign_in_view_reservations">
+        <request>
+          <dyn_variable name="authenticity_token" />
+          <http url='/users/sign_in' version='1.1' method='GET'></http>
+        </request>
+      </transaction>
+
+      <!-- User waits at login page for 3 seconds, thinking of username and pass -->
+      <thinktime value="3" random="true" />
+
+      <!-- encode authenticity_token -->
+      <setdynvars
+        sourcetype="eval"
+        code="fun({Pid,DynVars})->{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),http_uri:encode(Val) end."
+      >
+        <var name="encoded_authenticity_token" />
+      </setdynvars>
+    
+      <setdynvars sourcetype="random_number" start="1" end="100">
+        <var name="user_email_num" />
+      </setdynvars>
+
+      <!-- User signs in -->
+      <request subst="true">
+        <http url='/users/sign_in' version='1.1' method='POST'
+          content_type='application/x-www-form-urlencoded'
+          contents='authenticity_token=%%_encoded_authenticity_token%%&amp;user%5Bemail%5D=tsung%%user_email_num%%@dinner-pal.com&amp;user%5Bpassword%5D=password'
+          ></http>
+      </request>
+
+      <transaction>
+        <request subst="true">
+          <http url='/reservations' method='GET'></http>
+        </request>
+      </transaction>
+    </session>
+    
+
   </sessions>
 </tsung>
