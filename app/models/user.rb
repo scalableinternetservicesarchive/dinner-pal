@@ -12,8 +12,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :confirmable, :lockable
 
-  has_many :listings, foreign_key: 'chef_id'
-  has_many :reservations, foreign_key: 'diner_id'
+  has_many :listings, foreign_key: 'chef_id', dependent: :destroy
+  has_many :reservations, foreign_key: 'diner_id', dependent: :destroy
 
   def available_listings
     listings.where(reserved?: false)

@@ -24,13 +24,8 @@
   </div>
 
   <div class="field d-none">
-    <%= form.label :author_id %>
-    <%= form.number_field :author_id, value: @current_user.id %>
-  </div>
-
-  <div class="field d-none">
     <%= form.label :listing_id %>
-    <%= form.number_field :listing_id, value: @reservation.listing_id %>
+    <%= form.number_field :listing_id, value: @listing_id %>
   </div>
 
   <div class="actions">

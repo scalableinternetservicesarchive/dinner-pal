@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   devise_for :users
   authenticate :user do
     resources :reservations
-    post '/reviews', to: 'reviews#create'
+    resources :reviews
   end
   root 'static_pages#home'
   get 'users/new'
