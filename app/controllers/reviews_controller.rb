@@ -61,7 +61,7 @@ class ReviewsController < ApplicationController
   private
     def authorize_user
       review = Review.find(params[:id])
-      redirect_to root_url, alert: 'You cannot view this page.' review.author_id == current_user.id or current_user.admin?
+      redirect_to root_url, alert: 'You cannot view this page.' unless review.author_id == current_user.id or current_user.admin?
     end
 
     def set_review
