@@ -44,6 +44,10 @@
       Reviewer: <%= review.user.name %> <br>
       Rating: <%= review.rating %> <br>
       Content: <%= review.content %> <br>
+      <% if review.author_id == current_user.id %>
+        <%= button_to 'Edit', edit_review_path(review), class: "btn btn-primary" %>
+        <%= button_to "Delete", review, :method => "delete", class: "btn btn-danger" %>
+      <% end %>
     <% end %>
 <% end %>
 

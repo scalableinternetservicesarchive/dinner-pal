@@ -1,7 +1,7 @@
 class ReservationsController < ApplicationController
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
   before_action :authorize_user, only: [:show, :edit, :update, :delete]
-  
+
   # GET /reservations
   # GET /reservations.json
   def index
@@ -11,6 +11,7 @@ class ReservationsController < ApplicationController
   # GET /reservations/1
   # GET /reservations/1.json
   def show
+    @listing_id = @reservation.listing_id
   end
 
   # GET /reservations/new

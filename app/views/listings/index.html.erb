@@ -59,7 +59,7 @@
           <td><%= listing.location %></td>
           <td><%= link_to 'Show', listing %></td>
           <td><%= link_to 'Edit', edit_listing_path(listing) %></td>
-          <td><%= link_to 'Destroy', listing, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= button_to "Delete", listing, :method => "delete", class: "btn btn-danger" %></td>
         </tr>
       <% end %>
     </tbody>
@@ -116,7 +116,7 @@
           <td><%= listing.location %></td>
           <td><%= link_to 'Show', listing %></td>
           <td><%= link_to 'Edit', edit_listing_path(listing) %></td>
-          <td><%= link_to 'Destroy', listing, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= button_to "Delete", listing, :method => "delete", class: "btn btn-danger" %></td>
         </tr>
       <% end %>
     </tbody>
