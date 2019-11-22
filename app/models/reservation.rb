@@ -9,6 +9,6 @@ class Reservation < ApplicationRecord
   end
 
   def free_listing
-    self.listing.set_availability(false)
+    self.listing.set_availability(false) if self.listing
   end
 end
