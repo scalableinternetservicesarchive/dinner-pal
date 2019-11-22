@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+<!DOCTYPE tsung SYSTEM "/usr/local/share/tsung/tsung-1.0.dtd" [] >
+<tsung loglevel="notice">
+
+  <!-- Client side setup -->
+  <clients>
+    <client host="localhost" use_controller_vm="true" maxusers='15000'/>
+  </clients>
+
+  <!-- Server side setup -->
+  <servers>
+    <server host="dinner-pal-dev2.us-west-2.elasticbeanstalk.com" port="80" type="tcp"/>
+  </servers>
+
+  <load>
+    <arrivalphase phase="1" duration="30" unit="second">
+      <users arrivalrate="1" unit="second"></users>
+    </arrivalphase>
+    <!--
+    <arrivalphase phase="2" duration="30" unit="second">
+      <users arrivalrate="2" unit="second"></users>
+    </arrivalphase>
+
+    <arrivalphase phase="3" duration="30" unit="second">
+      <users arrivalrate="4" unit="second"></users>
+    </arrivalphase>
+
+    <arrivalphase phase="4" duration="30" unit="second">
+      <users arrivalrate="8" unit="second"></users>
+    </arrivalphase>
+
+    <arrivalphase phase="5" duration="30" unit="second">
+        <users arrivalrate="16" unit="second"></users>
+    </arrivalphase>
+    -->
+  </load>
+
+  <options>
+    <!-- Set connection timeout to 5 seconds -->
+    <option name="global_ack_timeout" value="5000"></option>
+
+    <option type="ts_http" name="user_agent">
+      <user_agent probability="100">Mozilla/5.0 (Windows; U; Windows NT 5.2; fr-FR; rv:1.7.8) Gecko/20050511 Firefox/1.0.4</user_agent>
+    </option>
+  </options>
+
+  <sessions>
+    <session name="Create and Delete User" weight="1" type="ts_http">
+      <transaction name="sign_up">
+        <request>
+          <dyn_variable name="authenticity_token"/>
+          <http url='/users/sign_up'></http>
+        </request>
+      </transaction>
+      
+      <setdynvars
+        sourcetype="eval"
+        code="fun({Pid,DynVars})->{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),http_uri:encode(Val) end."
+      >
+        <var name="encoded_authenticity_token" />
+      </setdynvars>
+
+      <setdynvars sourcetype="random_string" length="8">
+        <var name="user_string" />
+      </setdynvars>
+
+      <!-- User thinks of name/password/email for 10 seconds-->
+      <thinktime value="10" random="true"></thinktime>
+      
+      <transaction name="create_user">
+        <request subst="true">
+          <http url='/users/' method='POST' contents="authenticity_token=%%_encoded_authenticity_token%%&amp;user%5Bname%5D=%%_user_string%%&amp;user%5Bpassword%5D=password&amp;user%5Bpassword_confirmation%5D=password&amp;user%5Bemail%5D=%%_user_string%%@dinner-pal.com"></http>
+        </request>
+      </transaction>
+      
+      <!-- Cleanup -->
+      <transaction name="edit_user">
+        <request>
+          <dyn_variable name="authenticity_token"/>
+          <http url='/users/edit'></http>
+        </request>
+      </transaction>
+
+      <setdynvars
+        sourcetype="eval"
+        code="fun({Pid,DynVars})->{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),http_uri:encode(Val) end.">
+        <var name="encoded_authenticity_token" />
+      </setdynvars>
+      
+      <!-- User debates deleting his account for 3 seconds-->
+      <thinktime value="3" random="true"></thinktime>
+      
+      <transaction name="delete_user">
+        <request subst="true">
+          <http url='/users' method='POST' contents="authenticity_token=%%_encoded_authenticity_token%%&amp;_method=delete"></http>
+        </request>
+      </transaction>
+    </session>
+
+    <!-- Visit Home Page -->
+    <session name="Home Page" weight="1" type="ts_http">
+      <transaction name="home_page">
+        <request subst="true">
+          <http url='/' method='GET'></http>
+        </request>
+      </transaction>
+    </session>
+    
+    <!-- Browse Listings -->
+    <session name="Browse Listings" weight="1" type="ts_http">
+      <transaction name="browse_listings">
+        <request subst="true">
+          <http url='/browse' method='GET'></http>
+        </request>
+      </transaction>
+    </session>
+      
+    <!-- Search Listings -->
+    <session name="Search Listings" weight="1" type="ts_http">
+      <setdynvars sourcetype="random_string" length="8">
+        <var name="query_string" />
+      </setdynvars>
+      
+      <transaction name="search_listings">
+        <request subst="true">
+          <http url='/browse?query=%%_query_string%%' method='GET'></http>
+        </request>
+      </transaction>
+    </session>
+    
+    <!-- Create a Listing -->
+    <session name="Create a Listing" weight="1" type="ts_http">
+      <!-- User signs in -->
+      <transaction name="sign_in">
+        <request>
+          <dyn_variable name="authenticity_token" />
+          <http url='/users/sign_in' version='1.1' method='GET'></http>
+        </request>
+      </transaction>
+
+      <!-- User waits at login page for ~3 seconds, thinking of username and pass -->
+      <thinktime value="3" random="true" />
+
+      <!-- encode authenticity_token -->
+      <setdynvars
+        sourcetype="eval"
+        code="fun({Pid,DynVars})->{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),http_uri:encode(Val) end."
+      >
+        <var name="encoded_authenticity_token" />
+      </setdynvars>
+    
+      <setdynvars sourcetype="random_number" start="1" end="100">
+        <var name="user_email_num" />
+      </setdynvars>
+
+      <!-- User signs in -->
+      <request subst="true">
+        <http url='/users/sign_in' version='1.1' method='POST'
+          content_type='application/x-www-form-urlencoded'
+          contents='authenticity_token=%%_encoded_authenticity_token%%&amp;user%5Bemail%5D=tsung%%user_email_num%%@dinner-pal.com&amp;user%5Bpassword%5D=password'
+          ></http>
+      </request>
+    </session>    
+  </sessions>
+</tsung>
