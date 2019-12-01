@@ -24,7 +24,7 @@ namespace :load_test do
   task del_users: :environment do
     for test_id in 1..NUM_TSUNG_USERS do
       curr_user_name = "Tsung %d" % [test_id]
-      User.destroy_by(name: curr_user_name) if User.exists?(curr_user_name)
+      User.destroy_by(name: curr_user_name) if User.exists?(name: curr_user_name)
     end
   end
 
@@ -56,8 +56,8 @@ namespace :load_test do
     for test_id in 1..NUM_TSUNG_LISTINGS do
       curr_listing_name = "Tsung Listing %d" % [test_id]
       curr_user_name = "Tsung listing test user with id %d" % [test_id]
-      Listing.destroy_by(name: curr_listing_name) if Listing.exists?(curr_listing_name)
-      User.destroy_by(name: curr_user_name) if User.exists?(curr_user_name)
+      Listing.destroy_by(title: curr_listing_name) if Listing.exists?(title: curr_listing_name)
+      User.destroy_by(name: curr_user_name) if User.exists?(name: curr_user_name)
     end
   end
 end
