@@ -23,7 +23,8 @@ namespace :load_test do
   desc "Destroy users Tsung 1-NUM_TSUNG_USERS"
   task del_users: :environment do
     for test_id in 1..NUM_TSUNG_USERS do
-      User.destroy_by(name: "Tsung %d" % [test_id])
+      curr_user_name = "Tsung %d" % [test_id]
+      User.destroy_by(name: curr_user_name) if User.exists?(curr_user_name)
     end
   end
 
@@ -31,7 +32,7 @@ namespace :load_test do
   task gen_listings: :environment do
     for test_id in 1..NUM_TSUNG_LISTINGS do
       # If the user with this id doesn't exist, create one
-      unless User.find(test_id)
+      unless User.exists?(test_id)
         u = User.create!({
           :email => "tsunglistingtestuser%d@dinner-pal.com" % [test_id],
           :password => 'password',
@@ -53,8 +54,10 @@ namespace :load_test do
   desc "Destroy listings Tsung Listing 1-NUM_TSUNG_LISTINGS"
   task del_listings: :environment do
     for test_id in 1..NUM_TSUNG_LISTINGS do
-      Listing.destroy_by(name: "Tsung Listing %d" % [test_id])
-      User.destroy_by(name: "Tsung listing test user with id %d" % [test_id])
+      curr_listing_name = "Tsung Listing %d" % [test_id]
+      curr_user_name = "Tsung listing test user with id %d" % [test_id]
+      Listing.destroy_by(name: curr_listing_name) if Listing.exists?(curr_listing_name)
+      User.destroy_by(name: curr_user_name) if User.exists?(curr_user_name)
     end
   end
 end
