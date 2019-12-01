@@ -211,6 +211,82 @@
         </request>
       </transaction>
     </session>
+
+    <!-- Log in, browse listings, make a reservation, make a review, delete reservation -->
+    <session name="Create a Reservation" weight="1" type="ts_http">
+      <request>
+        <dyn_variable name="authenticity_token" />
+        <http url='/users/sign_in' version='1.1' method='GET'></http>
+      </request>
+
+      <thinktime value="3" random="true" />
+
+      <setdynvars
+        sourcetype="eval"
+        code="fun({Pid,DynVars})->{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),http_uri:encode(Val) end.">
+        <var name="encoded_authenticity_token" />
+      </setdynvars>
+
+      <request subst="true">
+        <http url='/reservations' version='1.1' method='POST'
+          content_type='application/x-www-form-urlencoded'
+          contents="authenticity_token=%%_encoded_authenticity_token%%&amp;reservation%5Blisting_id%5D=%%_listing_id%%&amp;reservation%5Bdiner_id%5D=%%'_reservation[diner_id]'%%&amp;reservation%5Bstart_time%281i%29%5D=2019&amp;reservation%5Bstart_time%282i%29%5D=12&amp;reservation%5Bstart_time%283i%29%5D=1&amp;reservation%5Bstart_time%284i%29%5D=21&amp;reservation%5Bstart_time%285i%29%5D=45&amp;reservation%5Bend_time%281i%29%5D=2019&amp;reservation%5Bend_time%282i%29%5D=12&amp;reservation%5Bend_time%283i%29%5D=2&amp;reservation%5Bend_time%284i%29%5D=21&amp;reservation%5Bend_time%285i%29%5D=45&amp;commit=Create+Reservation">
+        </http>
+      </request>
+    
+      <setdynvars sourcetype="random_number" start="1" end="100">
+        <var name="user_email_num" />
+      </setdynvars>
+
+      <request subst="true">
+        <http url='/users/sign_in' version='1.1' method='POST'
+          content_type='application/x-www-form-urlencoded'
+          contents='authenticity_token=%%_encoded_authenticity_token%%&amp;user%5Bemail%5D=tsung%%user_email_num%%@dinner-pal.com&amp;user%5Bpassword%5D=password'>
+        </http>
+      </request>
+
+      <request subst="true">
+        <http url='/browse' method='GET'></http>
+      </request>
+
+      <thinktime value="10" random="true" />
+
+      <setdynvars sourcetype="random_number" start="1" end="100">
+        <var name="listing_id" />
+      </setdynvars>
+
+      <request subst="true">
+        <http url='/listings/%%_listing_id%%' method='GET'></http>
+      </request>
+
+      <thinktime value="10" random="true" />
+
+      <request subst="true">
+        <dyn_variable name="authenticity_token" />
+        <http url='/reservations/new?listing_id=%%_listing_id%%' method='GET'></http>
+      </request>
+
+      <setdynvars
+        sourcetype="eval"
+        code="fun({Pid,DynVars})->{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),http_uri:encode(Val) end.">
+        <var name="encoded_authenticity_token" />
+      </setdynvars>
+
+      <!-- vincent: authenticity token is not being set and i can't figure out why. pls fix!!-->
+      <setdynvars sourcetype="eval" code="fun( {Pid, DynVars} ) ->
+				io:format([126, $p, 126, $n, 126, $n], [DynVars]),
+				ok end.">
+				<var name="dump" />
+			</setdynvars>
+
+      <request subst="true">
+        <http url='/reservations' version='1.1' method='POST'
+          content_type='application/x-www-form-urlencoded'
+          contents="authenticity_token=%%_encoded_authenticity_token%%&amp;reservation%5Blisting_id%5D=%%_listing_id%%&amp;reservation%5Bdiner_id%5D=401&amp;reservation%5Bstart_time%281i%29%5D=2019&amp;reservation%5Bstart_time%282i%29%5D=12&amp;reservation%5Bstart_time%283i%29%5D=1&amp;reservation%5Bstart_time%284i%29%5D=21&amp;reservation%5Bstart_time%285i%29%5D=45&amp;reservation%5Bend_time%281i%29%5D=2019&amp;reservation%5Bend_time%282i%29%5D=12&amp;reservation%5Bend_time%283i%29%5D=2&amp;reservation%5Bend_time%284i%29%5D=21&amp;reservation%5Bend_time%285i%29%5D=45&amp;commit=Create+Reservation">
+        </http>
+      </request>
+
+    </session>
     
 
   </sessions>
