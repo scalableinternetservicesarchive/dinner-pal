@@ -31,7 +31,7 @@ namespace :load_test do
   task gen_listings: :environment do
     for test_id in 1..NUM_TSUNG_LISTINGS do
       # If the user with this id doesn't exist, create one
-      unless User.find(test_id) do
+      unless User.find(test_id)
         u = User.create!({
           :email => "tsunglistingtestuser%d@dinner-pal.com" % [test_id],
           :password => 'password',
