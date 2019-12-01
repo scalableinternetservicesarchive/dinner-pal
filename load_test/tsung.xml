@@ -9,7 +9,7 @@
 
   <!-- Server side setup -->
   <servers>
-    <server host="dinner-pal-dev2.us-west-2.elasticbeanstalk.com" port="80" type="tcp"/>
+    <server host="dinner-pal-dev.us-west-2.elasticbeanstalk.com" port="80" type="tcp"/>
   </servers>
 
   <load>
@@ -161,7 +161,7 @@
           ></http>
       </request>
 
-      <transaction>
+      <transaction name="view_my_listings">
         <request subst="true">
           <http url='/listings' method='GET'></http>
         </request>
@@ -202,7 +202,7 @@
           ></http>
       </request>
 
-      <transaction>
+      <transaction name="view_my_reservations">
         <request subst="true">
           <http url='/reservations' method='GET'></http>
         </request>
