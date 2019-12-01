@@ -76,16 +76,19 @@
       <!-- Cleanup -->
       <transaction name="edit_user">
         <request>
-          <dyn_variable name="authenticity_token"/>
+          <dyn_variable name="authenticity_token" xpath="//form[@class='button_to']/input[@name='authenticity_token']/@value"/>
           <http url='/users/edit'></http>
         </request>
       </transaction>
 
-      <setdynvars
-        sourcetype="eval"
-        code="fun({Pid,DynVars})->{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),http_uri:encode(Val) end.">
-        <var name="encoded_authenticity_token" />
-      </setdynvars>
+      <!-- Use a foreach loop to grab the element in the array, not sure how else to handle this -->
+      <foreach name="temp" in="authenticity_token">
+        <setdynvars
+          sourcetype="eval"
+          code="fun({Pid,DynVars})->{ok,Val}=ts_dynvars:lookup(temp,DynVars),http_uri:encode(Val) end.">
+          <var name="encoded_authenticity_token" />
+        </setdynvars>
+      </foreach>
       
       <!-- User debates deleting his account for 3 seconds-->
       <thinktime value="3" random="true"></thinktime>
