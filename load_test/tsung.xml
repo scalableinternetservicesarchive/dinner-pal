@@ -333,32 +333,33 @@
         </http>
       </request>
       
-      
-      <!-- The following code for deleting a listing needs to be tested and integrated. -->
-      
-      <request subst="true">
-        <dyn_variable name="redirect" re="Location: (http://.*)\r" />
-        <dyn_variable name="listing_id" re="Location: http://.*/listings/([0-9]+)\r" />
-        <http url='/listings' version='1.1' method='POST'
-          content_type='application/x-www-form-urlencoded'
-          contents='.........'
-        </http>
+      <request>
+        <http url='/listings' method='GET'></http>
       </request>
-
-      <request subst="true">
-        <dyn_variable name="authenticity_token"/>
-        <http url="%%_redirect%%" method="GET"></http>
-      </request>
-
-      <setdynvars
-        sourcetype="eval"
-        code="fun({Pid,DynVars})->{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),http_uri:encode(Val) end.">
-        <var name="encoded_authenticity_token" />
-      </setdynvars>
 
       <request>
         <dyn_variable name="authenticity_token"/>
-        <http url='/listings'  method='GET'></http>
+        <http url='/listings/new' method='GET'></http>
+      </request>
+
+      <request subst="all_except_body">
+        <dyn_variable name="redirect" re="Location: (http://.*)\r" />
+        <dyn_variable name="listing_id" re="Location: http://.*/listings/([0-9]+)\r" />  
+        <http
+          url='/listings'
+          contents_from_file="./multipart-form-data.bin"
+          content_type='multipart/form-data; boundary=----WebKitFormBoundaryT60m81zw2IQmNN2b'
+          method='POST'>
+          <http_header name="X-CSRF-Token" value="%%_authenticity_token%%"/>
+          <http_header name="Accept" value="text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3" />
+          <http_header name="Accept-Encoding" value="gzip, deflate" />
+          <http_header name="Accept-Language" value="en-US,en;q=0.9" />
+        </http>
+      </request>
+
+      <!-- <request subst="true">
+        <dyn_variable name="authenticity_token"/>
+        <http url="%%_redirect%%" method="GET"></http>
       </request>
 
       <setdynvars
@@ -372,7 +373,7 @@
           content_type='application/x-www-form-urlencoded'
           contents="_method=delete&amp;authenticity_token=%%_encoded_authenticity_token%%">
         </http>
-      </request>
+      </request> -->
 
 
     </session>
