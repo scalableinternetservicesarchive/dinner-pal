@@ -343,6 +343,7 @@
 
       <request subst="all_except_body">
         <dyn_variable name="redirect" re="Location: (http://.*)\r" />
+        <dyn_variable name="listing_id" re="Location: http://.*/listings/([0-9]+)\r" />
         <http
           url='/listings'
           contents_from_file="./multipart-form-data-windows-format.bin"
