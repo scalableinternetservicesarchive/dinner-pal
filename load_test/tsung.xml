@@ -9,7 +9,7 @@
 
   <!-- Server side setup -->
   <servers>
-    <server host="dinner-pal-dev.us-west-2.elasticbeanstalk.com" port="80" type="tcp"/>
+    <server host="dinner-pal-dev.gzey4mivpj.us-west-2.elasticbeanstalk.com" port="80" type="tcp"/>
   </servers>
 
   <load>
@@ -44,6 +44,7 @@
     </option>
   </options>
 
+  <!-- USER CREATION AND DELETION -->
   <sessions>
     <session name="Create and Delete User" weight="1" type="ts_http">
       <transaction name="sign_up">
@@ -100,6 +101,8 @@
       </transaction>
     </session>
 
+    <!-- PUBLIC SESSIONS -->
+
     <!-- Visit Home Page -->
     <session name="Home Page" weight="1" type="ts_http">
       <transaction name="home_page">
@@ -131,6 +134,8 @@
       </transaction>
     </session>
     
+    <!-- SESSIONS REQUIRING LOGIN -->
+
     <!-- View My Listings -->
     <session name="View My Listings" weight="1" type="ts_http">
       <!-- User loads signs in page -->
@@ -214,7 +219,7 @@
 
     <!-- Implemented: log in, browse listings, view a listing, make a reservation -->
     <!-- TODO: make a review, delete reservation, make a listing, delete a listing, sign out -->
-    <session name="Create a Reservation" weight="1" type="ts_http">
+    <session name="Hit all endpoints" weight="1" type="ts_http">
       <request>
         <dyn_variable name="authenticity_token" />
         <http url='/users/sign_in' version='1.1' method='GET'></http>
@@ -227,13 +232,6 @@
         code="fun({Pid,DynVars})->{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),http_uri:encode(Val) end.">
         <var name="encoded_authenticity_token" />
       </setdynvars>
-
-      <request subst="true">
-        <http url='/reservations' version='1.1' method='POST'
-          content_type='application/x-www-form-urlencoded'
-          contents="authenticity_token=%%_encoded_authenticity_token%%&amp;reservation%5Blisting_id%5D=%%_listing_id%%&amp;reservation%5Bdiner_id%5D=%%'_reservation[diner_id]'%%&amp;reservation%5Bstart_time%281i%29%5D=2019&amp;reservation%5Bstart_time%282i%29%5D=12&amp;reservation%5Bstart_time%283i%29%5D=1&amp;reservation%5Bstart_time%284i%29%5D=21&amp;reservation%5Bstart_time%285i%29%5D=45&amp;reservation%5Bend_time%281i%29%5D=2019&amp;reservation%5Bend_time%282i%29%5D=12&amp;reservation%5Bend_time%283i%29%5D=2&amp;reservation%5Bend_time%284i%29%5D=21&amp;reservation%5Bend_time%285i%29%5D=45&amp;commit=Create+Reservation">
-        </http>
-      </request>
     
       <setdynvars sourcetype="random_number" start="1" end="100">
         <var name="user_email_num" />
@@ -284,9 +282,37 @@
       </setdynvars>
 
       <request subst="true">
+        <dyn_variable name="redirect" re="Location: (http://.*)\r" />
+        <dyn_variable name="reservation_id" re="Location: http://.*/reservations/([0-9]+)\r" />
         <http url='/reservations' version='1.1' method='POST'
           content_type='application/x-www-form-urlencoded'
           contents="authenticity_token=%%_encoded_authenticity_token%%&amp;reservation%5Blisting_id%5D=%%_listing_id%%&amp;reservation%5Bdiner_id%5D=%%_reservation_diner_id%%&amp;reservation%5Bstart_time%281i%29%5D=2019&amp;reservation%5Bstart_time%282i%29%5D=12&amp;reservation%5Bstart_time%283i%29%5D=1&amp;reservation%5Bstart_time%284i%29%5D=21&amp;reservation%5Bstart_time%285i%29%5D=45&amp;reservation%5Bend_time%281i%29%5D=2019&amp;reservation%5Bend_time%282i%29%5D=12&amp;reservation%5Bend_time%283i%29%5D=2&amp;reservation%5Bend_time%284i%29%5D=21&amp;reservation%5Bend_time%285i%29%5D=45&amp;commit=Create+Reservation">
+        </http>
+        <dyn_variable name="authenticity_token" />
+      </request>
+
+      <setdynvars sourcetype="eval" code="fun( {Pid, DynVars} ) ->
+        io:format([126, $p, 126, $n, 126, $n], [DynVars]),
+        ok end.">
+        <var name="dump" />
+      </setdynvars>
+
+      <request subst="true">
+        <dyn_variable name="authenticity_token"/>
+        <http url="%%_redirect%%" method="GET"></http>
+      </request>
+
+      <setdynvars
+        sourcetype="eval"
+        code="fun({Pid,DynVars})->{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),http_uri:encode(Val) end.">
+        <var name="encoded_authenticity_token" />
+      </setdynvars>
+
+      <request subst="true">
+        <http url='/reviews' version='1.1' method='POST'
+          content_type='application/x-www-form-urlencoded'
+          contents="authenticity_token=%%_encoded_authenticity_token%%&amp;review%5Brating%5D=4&amp;review%5Bcontent%5D=thisfoodwasgood&amp;review%5Blisting_id%5D=%%_listing_id%\
+%&amp;commit=Create+Review">
         </http>
       </request>
 
