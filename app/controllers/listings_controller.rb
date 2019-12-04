@@ -68,9 +68,9 @@ class ListingsController < ApplicationController
 
   def browse
     if params[:query].present?
-      @listings = Listing.search_for(params[:query])
+      @listings = Listing.search_for(params[:query]).page(params[:page]).order('created_at DESC')
     else
-      @listings = Listing.includes(:user).with_attached_images
+      @listings = Listing.page(params[:page]).order('created_at DESC').includes(:user).with_attached_images
     end
   end
 
