@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_15_185519) do
+ActiveRecord::Schema.define(version: 2019_12_04_012347) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 2019_11_15_185519) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "reserved?"
+    t.index ["chef_id"], name: "index_listings_on_chef_id"
     t.index ["reserved?"], name: "index_listings_on_reserved?"
   end
 
@@ -54,6 +55,8 @@ ActiveRecord::Schema.define(version: 2019_11_15_185519) do
     t.datetime "end_time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["diner_id"], name: "index_reservations_on_diner_id"
+    t.index ["listing_id"], name: "index_reservations_on_listing_id"
   end
 
   create_table "reviews", force: :cascade do |t|
@@ -63,6 +66,7 @@ ActiveRecord::Schema.define(version: 2019_11_15_185519) do
     t.text "content"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["listing_id"], name: "index_reviews_on_listing_id"
   end
 
   create_table "users", force: :cascade do |t|

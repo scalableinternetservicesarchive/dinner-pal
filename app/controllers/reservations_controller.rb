@@ -5,7 +5,7 @@ class ReservationsController < ApplicationController
   # GET /reservations
   # GET /reservations.json
   def index
-    @reservations = current_user.reservations
+    @reservations = current_user.reservations.includes(listing: [:user])
   end
 
   # GET /reservations/1

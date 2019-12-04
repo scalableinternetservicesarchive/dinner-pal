@@ -4,14 +4,14 @@ class ListingsController < ApplicationController
   # GET /listings
   # GET /listings.json
   def index
-    @available_listings = current_user.available_listings
-    @reserved_listings = current_user.reserved_listings
+    @available_listings = current_user.available_listings.includes(:user).with_attached_images
+    @reserved_listings = current_user.reserved_listings.includes(:user).with_attached_images
   end
 
   # GET /listings/1
   # GET /listings/1.json
   def show
-    @reviews = @listing.reviews
+    @reviews = @listing.reviews.includes(:user)
     @current_user = current_user
   end
 
@@ -70,7 +70,7 @@ class ListingsController < ApplicationController
     if params[:query].present?
       @listings = Listing.search_for(params[:query])
     else
-      @listings = Listing.all
+      @listings = Listing.includes(:user).with_attached_images
     end
   end
 
