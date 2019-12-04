@@ -288,7 +288,6 @@
           content_type='application/x-www-form-urlencoded'
           contents="authenticity_token=%%_encoded_authenticity_token%%&amp;reservation%5Blisting_id%5D=%%_listing_id%%&amp;reservation%5Bdiner_id%5D=%%_reservation_diner_id%%&amp;reservation%5Bstart_time%281i%29%5D=2019&amp;reservation%5Bstart_time%282i%29%5D=12&amp;reservation%5Bstart_time%283i%29%5D=1&amp;reservation%5Bstart_time%284i%29%5D=21&amp;reservation%5Bstart_time%285i%29%5D=45&amp;reservation%5Bend_time%281i%29%5D=2019&amp;reservation%5Bend_time%282i%29%5D=12&amp;reservation%5Bend_time%283i%29%5D=2&amp;reservation%5Bend_time%284i%29%5D=21&amp;reservation%5Bend_time%285i%29%5D=45&amp;commit=Create+Reservation">
         </http>
-        <dyn_variable name="authenticity_token" />
       </request>
 
       <setdynvars sourcetype="eval" code="fun( {Pid, DynVars} ) ->
