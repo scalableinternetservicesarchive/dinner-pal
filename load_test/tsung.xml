@@ -283,18 +283,12 @@
 
       <request subst="true">
         <dyn_variable name="redirect" re="Location: (http://.*)\r" />
-        <dyn_variable name="reservation_id" re="Location: http://.*/reservations/([0-9]+)\r" />
+	      <dyn_variable name="reservation_id" re="Location: http://.*/reservations/([0-9]+)\r" />
         <http url='/reservations' version='1.1' method='POST'
           content_type='application/x-www-form-urlencoded'
           contents="authenticity_token=%%_encoded_authenticity_token%%&amp;reservation%5Blisting_id%5D=%%_listing_id%%&amp;reservation%5Bdiner_id%5D=%%_reservation_diner_id%%&amp;reservation%5Bstart_time%281i%29%5D=2019&amp;reservation%5Bstart_time%282i%29%5D=12&amp;reservation%5Bstart_time%283i%29%5D=1&amp;reservation%5Bstart_time%284i%29%5D=21&amp;reservation%5Bstart_time%285i%29%5D=45&amp;reservation%5Bend_time%281i%29%5D=2019&amp;reservation%5Bend_time%282i%29%5D=12&amp;reservation%5Bend_time%283i%29%5D=2&amp;reservation%5Bend_time%284i%29%5D=21&amp;reservation%5Bend_time%285i%29%5D=45&amp;commit=Create+Reservation">
         </http>
       </request>
-
-      <setdynvars sourcetype="eval" code="fun( {Pid, DynVars} ) ->
-        io:format([126, $p, 126, $n, 126, $n], [DynVars]),
-        ok end.">
-        <var name="dump" />
-      </setdynvars>
 
       <request subst="true">
         <dyn_variable name="authenticity_token"/>
@@ -308,11 +302,10 @@
       </setdynvars>
 
       <request subst="true">
-        <http url='/reviews' version='1.1' method='POST'
-          content_type='application/x-www-form-urlencoded'
-          contents="authenticity_token=%%_encoded_authenticity_token%%&amp;review%5Brating%5D=4&amp;review%5Bcontent%5D=thisfoodwasgood&amp;review%5Blisting_id%5D=%%_listing_id%\
-%&amp;commit=Create+Review">
-        </http>
+	      <http url='/reviews' version='1.1' method='POST'
+	        content_type='application/x-www-form-urlencoded'
+		      contents="authenticity_token=%%_encoded_authenticity_token%%&amp;review%5Brating%5D=4&amp;review%5Bcontent%5D=thisfoodwasgood&amp;review%5Blisting_id%5D=%%_listing_id%%&amp;commit=Create+Review">
+	      </http>
       </request>
 
       <request>
@@ -327,12 +320,12 @@
       </setdynvars>
 
       <request subst="true">
-        <http url='/reservations/%%_reservation_id%%' version='1.1' method='POST'
-              content_type='application/x-www-form-urlencoded'
-              contents="_method=delete&amp;authenticity_token=%%_encoded_authenticity_token%%">
-        </http>
+	      <http url='/reservations/%%_reservation_id%%' version='1.1' method='POST'
+          content_type='application/x-www-form-urlencoded'
+          contents="_method=delete&amp;authenticity_token=%%_encoded_authenticity_token%%">
+	      </http>
       </request>
-      
+
       <request>
         <http url='/listings' method='GET'></http>
       </request>
@@ -342,20 +335,32 @@
         <http url='/listings/new' method='GET'></http>
       </request>
 
+      <setdynvars
+        sourcetype="eval"
+        code="fun({Pid,DynVars})->{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),http_uri:encode(Val) end.">
+        <var name="encoded_authenticity_token" />
+      </setdynvars>
+
       <request subst="all_except_body">
         <dyn_variable name="redirect" re="Location: (http://.*)\r" />
-        <dyn_variable name="listing_id" re="Location: http://.*/listings/([0-9]+)\r" />  
         <http
           url='/listings'
-          contents_from_file="./multipart-form-data.bin"
-          content_type='multipart/form-data; boundary=----WebKitFormBoundaryT60m81zw2IQmNN2b'
+          contents_from_file="./multipart-form-data-windows-format.bin"
+          content_type='multipart/form-data; boundary=----WebKitFormBoundaryJk8zyR5zfUK7vmJ1'
           method='POST'>
           <http_header name="X-CSRF-Token" value="%%_authenticity_token%%"/>
           <http_header name="Accept" value="text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3" />
           <http_header name="Accept-Encoding" value="gzip, deflate" />
           <http_header name="Accept-Language" value="en-US,en;q=0.9" />
-        </http>
+	      </http>
       </request>
+
+      <setdynvars sourcetype="eval" code="fun( {Pid, DynVars} ) ->
+       io:format([126, $p, 126, $n, 126, $n], [DynVars]),
+       ok end.">
+       <var name="dump" />
+      </setdynvars>
+    </session>
 
       <!-- <request subst="true">
         <dyn_variable name="authenticity_token"/>
@@ -373,11 +378,7 @@
           content_type='application/x-www-form-urlencoded'
           contents="_method=delete&amp;authenticity_token=%%_encoded_authenticity_token%%">
         </http>
-      </request> -->
-
-
-    </session>
-    
+      </request> -->    
 
   </sessions>
 </tsung>
