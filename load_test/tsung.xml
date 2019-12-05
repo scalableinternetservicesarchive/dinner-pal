@@ -16,7 +16,6 @@
     <arrivalphase phase="1" duration="30" unit="second">
       <users arrivalrate="1" unit="second"></users>
     </arrivalphase>
-    <!--
     <arrivalphase phase="2" duration="30" unit="second">
       <users arrivalrate="2" unit="second"></users>
     </arrivalphase>
@@ -32,7 +31,10 @@
     <arrivalphase phase="5" duration="30" unit="second">
         <users arrivalrate="16" unit="second"></users>
     </arrivalphase>
-    -->
+    <arrivalphase phase="6" duration="30" unit="second">
+        <users arrivalrate="32" unit="second"></users>
+    </arrivalphase>
+
   </load>
 
   <options>
@@ -43,182 +45,9 @@
       <user_agent probability="100">Mozilla/5.0 (Windows; U; Windows NT 5.2; fr-FR; rv:1.7.8) Gecko/20050511 Firefox/1.0.4</user_agent>
     </option>
   </options>
-
-  <!-- USER CREATION AND DELETION -->
   <sessions>
-    <session name="Create and Delete User" weight="1" type="ts_http">
-      <transaction name="sign_up">
-        <request>
-          <dyn_variable name="authenticity_token"/>
-          <http url='/users/sign_up'></http>
-        </request>
-      </transaction>
-      
-      <setdynvars
-        sourcetype="eval"
-        code="fun({Pid,DynVars})->{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),http_uri:encode(Val) end."
-      >
-        <var name="encoded_authenticity_token" />
-      </setdynvars>
-
-      <setdynvars sourcetype="random_string" length="8">
-        <var name="user_string" />
-      </setdynvars>
-
-      <!-- User thinks of name/password/email for 10 seconds-->
-      <thinktime value="10" random="true"></thinktime>
-      
-      <transaction name="create_user">
-        <request subst="true">
-          <http url='/users/' method='POST' contents="authenticity_token=%%_encoded_authenticity_token%%&amp;user%5Bname%5D=%%_user_string%%&amp;user%5Bpassword%5D=password&amp;user%5Bpassword_confirmation%5D=password&amp;user%5Bemail%5D=%%_user_string%%@dinner-pal.com"></http>
-        </request>
-      </transaction>
-      
-      <!-- Cleanup -->
-      <transaction name="edit_user">
-        <request>
-          <dyn_variable name="authenticity_token" xpath="//form[@class='button_to']/input[@name='authenticity_token']/@value"/>
-          <http url='/users/edit'></http>
-        </request>
-      </transaction>
-
-      <!-- Use a foreach loop to grab the element in the array, not sure how else to handle this -->
-      <foreach name="temp" in="authenticity_token">
-        <setdynvars
-          sourcetype="eval"
-          code="fun({Pid,DynVars})->{ok,Val}=ts_dynvars:lookup(temp,DynVars),http_uri:encode(Val) end.">
-          <var name="encoded_authenticity_token" />
-        </setdynvars>
-      </foreach>
-      
-      <!-- User debates deleting his account for 3 seconds-->
-      <thinktime value="3" random="true"></thinktime>
-      
-      <transaction name="delete_user">
-        <request subst="true">
-          <http url='/users' method='POST' contents="authenticity_token=%%_encoded_authenticity_token%%&amp;_method=delete"></http>
-        </request>
-      </transaction>
-    </session>
-
-    <!-- PUBLIC SESSIONS -->
-
-    <!-- Visit Home Page -->
-    <session name="Home Page" weight="1" type="ts_http">
-      <transaction name="home_page">
-        <request subst="true">
-          <http url='/' method='GET'></http>
-        </request>
-      </transaction>
-    </session>
-    
-    <!-- Browse Listings -->
-    <session name="Browse Listings" weight="1" type="ts_http">
-      <transaction name="browse_listings">
-        <request subst="true">
-          <http url='/browse' method='GET'></http>
-        </request>
-      </transaction>
-    </session>
-      
-    <!-- Search Listings -->
-    <session name="Search Listings" weight="1" type="ts_http">
-      <setdynvars sourcetype="random_string" length="8">
-        <var name="query_string" />
-      </setdynvars>
-      
-      <transaction name="search_listings">
-        <request subst="true">
-          <http url='/browse?query=%%_query_string%%' method='GET'></http>
-        </request>
-      </transaction>
-    </session>
-    
-    <!-- SESSIONS REQUIRING LOGIN -->
-
-    <!-- View My Listings -->
-    <session name="View My Listings" weight="1" type="ts_http">
-      <!-- User loads signs in page -->
-      <transaction name="sign_in_view_listings">
-        <request>
-          <dyn_variable name="authenticity_token" />
-          <http url='/users/sign_in' version='1.1' method='GET'></http>
-        </request>
-      </transaction>
-
-      <!-- User waits at login page for 3 seconds, thinking of username and pass -->
-      <thinktime value="3" random="true" />
-
-      <!-- encode authenticity_token -->
-      <setdynvars
-        sourcetype="eval"
-        code="fun({Pid,DynVars})->{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),http_uri:encode(Val) end."
-      >
-        <var name="encoded_authenticity_token" />
-      </setdynvars>
-    
-      <setdynvars sourcetype="random_number" start="1" end="100">
-        <var name="user_email_num" />
-      </setdynvars>
-
-      <!-- User signs in -->
-      <request subst="true">
-        <http url='/users/sign_in' version='1.1' method='POST'
-          content_type='application/x-www-form-urlencoded'
-          contents='authenticity_token=%%_encoded_authenticity_token%%&amp;user%5Bemail%5D=tsung%%_user_email_num%%@dinner-pal.com&amp;user%5Bpassword%5D=password'
-          ></http>
-      </request>
-
-      <transaction name="view_my_listings">
-        <request subst="true">
-          <http url='/listings' method='GET'></http>
-        </request>
-      </transaction>
-      
-    </session>
-    
-    <!-- View My Reservations -->
-    <session name="View My Reservations" weight="1" type="ts_http">
-      <!-- User loads signs in page -->
-      <transaction name="sign_in_view_reservations">
-        <request>
-          <dyn_variable name="authenticity_token" />
-          <http url='/users/sign_in' version='1.1' method='GET'></http>
-        </request>
-      </transaction>
-
-      <!-- User waits at login page for 3 seconds, thinking of username and pass -->
-      <thinktime value="3" random="true" />
-
-      <!-- encode authenticity_token -->
-      <setdynvars
-        sourcetype="eval"
-        code="fun({Pid,DynVars})->{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),http_uri:encode(Val) end."
-      >
-        <var name="encoded_authenticity_token" />
-      </setdynvars>
-    
-      <setdynvars sourcetype="random_number" start="1" end="100">
-        <var name="user_email_num" />
-      </setdynvars>
-
-      <!-- User signs in -->
-      <request subst="true">
-        <http url='/users/sign_in' version='1.1' method='POST'
-          content_type='application/x-www-form-urlencoded'
-          contents='authenticity_token=%%_encoded_authenticity_token%%&amp;user%5Bemail%5D=tsung%%_user_email_num%%@dinner-pal.com&amp;user%5Bpassword%5D=password'
-          ></http>
-      </request>
-
-      <transaction name="view_my_reservations">
-        <request subst="true">
-          <http url='/reservations' method='GET'></http>
-        </request>
-      </transaction>
-    </session>
-
-    <!-- Implemented: log in, browse listings, view a listing, make a reservation -->
-    <!-- TODO: make a review, delete reservation, make a listing, delete a listing, sign out -->
+    <!-- Implemented: log in, browse listings, view a listing, make a reservation, make a review, delete reservation -->
+    <!-- TODO: make a listing, delete a listing, sign out -->
     <session name="Hit all endpoints" weight="1" type="ts_http">
       <request>
         <dyn_variable name="authenticity_token" />
@@ -283,19 +112,12 @@
 
       <request subst="true">
         <dyn_variable name="redirect" re="Location: (http://.*)\r" />
-        <dyn_variable name="reservation_id" re="Location: http://.*/reservations/([0-9]+)\r" />
+	      <dyn_variable name="reservation_id" re="Location: http://.*/reservations/([0-9]+)\r" />
         <http url='/reservations' version='1.1' method='POST'
           content_type='application/x-www-form-urlencoded'
           contents="authenticity_token=%%_encoded_authenticity_token%%&amp;reservation%5Blisting_id%5D=%%_listing_id%%&amp;reservation%5Bdiner_id%5D=%%_reservation_diner_id%%&amp;reservation%5Bstart_time%281i%29%5D=2019&amp;reservation%5Bstart_time%282i%29%5D=12&amp;reservation%5Bstart_time%283i%29%5D=1&amp;reservation%5Bstart_time%284i%29%5D=21&amp;reservation%5Bstart_time%285i%29%5D=45&amp;reservation%5Bend_time%281i%29%5D=2019&amp;reservation%5Bend_time%282i%29%5D=12&amp;reservation%5Bend_time%283i%29%5D=2&amp;reservation%5Bend_time%284i%29%5D=21&amp;reservation%5Bend_time%285i%29%5D=45&amp;commit=Create+Reservation">
         </http>
-        <dyn_variable name="authenticity_token" />
       </request>
-
-      <setdynvars sourcetype="eval" code="fun( {Pid, DynVars} ) ->
-        io:format([126, $p, 126, $n, 126, $n], [DynVars]),
-        ok end.">
-        <var name="dump" />
-      </setdynvars>
 
       <request subst="true">
         <dyn_variable name="authenticity_token"/>
@@ -309,15 +131,78 @@
       </setdynvars>
 
       <request subst="true">
-        <http url='/reviews' version='1.1' method='POST'
-          content_type='application/x-www-form-urlencoded'
-          contents="authenticity_token=%%_encoded_authenticity_token%%&amp;review%5Brating%5D=4&amp;review%5Bcontent%5D=thisfoodwasgood&amp;review%5Blisting_id%5D=%%_listing_id%\
-%&amp;commit=Create+Review">
-        </http>
+	      <http url='/reviews' version='1.1' method='POST'
+	        content_type='application/x-www-form-urlencoded'
+		      contents="authenticity_token=%%_encoded_authenticity_token%%&amp;review%5Brating%5D=4&amp;review%5Bcontent%5D=thisfoodwasgood&amp;review%5Blisting_id%5D=%%_listing_id%%&amp;commit=Create+Review">
+	      </http>
       </request>
 
-    </session>
-    
+      <request>
+        <dyn_variable name="authenticity_token"/>
+        <http url='/reservations'  method='GET'></http>
+      </request>
 
+      <setdynvars
+        sourcetype="eval"
+        code="fun({Pid,DynVars})->{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),http_uri:encode(Val) end.">
+        <var name="encoded_authenticity_token" />
+      </setdynvars>
+
+      <request subst="true">
+	      <http url='/reservations/%%_reservation_id%%' version='1.1' method='POST'
+          content_type='application/x-www-form-urlencoded'
+          contents="_method=delete&amp;authenticity_token=%%_encoded_authenticity_token%%">
+	      </http>
+      </request>
+
+      <request>
+        <http url='/listings' method='GET'></http>
+      </request>
+
+      <request>
+        <dyn_variable name="authenticity_token"/>
+        <http url='/listings/new' method='GET'></http>
+      </request>
+
+      <setdynvars
+        sourcetype="eval"
+        code="fun({Pid,DynVars})->{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),http_uri:encode(Val) end.">
+        <var name="encoded_authenticity_token" />
+      </setdynvars>
+
+      <request subst="all_except_body">
+        <dyn_variable name="redirect" re="Location: (http://.*)\r" />
+        <dyn_variable name="listing_id" re="Location: http://.*/listings/([0-9]+)\r" />
+        <http
+          url='/listings'
+          contents_from_file="./multipart-form-data-windows-format.bin"
+          content_type='multipart/form-data; boundary=----WebKitFormBoundaryJk8zyR5zfUK7vmJ1'
+          method='POST'>
+          <http_header name="X-CSRF-Token" value="%%_authenticity_token%%"/>
+          <http_header name="Accept" value="text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3" />
+          <http_header name="Accept-Encoding" value="gzip, deflate" />
+          <http_header name="Accept-Language" value="en-US,en;q=0.9" />
+	      </http>
+      </request>
+
+      <request subst="true">
+        <http url="%%_redirect%%" method="GET"></http>
+      </request>
+
+      <request subst="true">
+        <dyn_variable name="redirect" re="Location: (http://.*)\r" />
+        <http url="/users/sign_out" method="GET"></http>
+      </request>
+
+      <request subst="true">
+        <http url="%%_redirect%%" method="GET"></http>
+      </request>
+
+      <setdynvars sourcetype="eval" code="fun( {Pid, DynVars} ) ->
+        io:format([126, $p, 126, $n, 126, $n], [DynVars]),
+        ok end.">
+        <var name="dump" />
+      </setdynvars>
+    </session>
   </sessions>
 </tsung>

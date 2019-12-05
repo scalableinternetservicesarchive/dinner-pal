@@ -1,0 +1,14 @@
+[04/Dec/2019:09:01:09 -0000] access to /favicon.ico failed for 45.50.181.228, reason: 
+"httpd_file: Can't access /home/ec2-user/.tsung/log/20191204-0859/favicon.ico: File not found"
+[04/Dec/2019:09:01:09 -0000] access to /assets/ico/favicon.ico failed for 45.50.181.228, reason: 
+"httpd_file: Can't access /home/ec2-user/.tsung/log/20191204-0859/assets/ico/favicon.ico: File not found"
+[04/Dec/2019:09:01:21 -0000], Error reading request: Not supported: {"OPTIONS",
+                "/l.php%3fu%3dhttp%3a//35.162.98.80/%26h%3dAT1ptDOBQTbjKv3Yyc-mhNQJ_lsYOFUn4NWHOqWnO2ngIo2uM6hwnZbONveOE3e9iacrx6XDPGAGymXhfYHVK-4HIVwfVfcCX1JlD7_JAJzQxz5qAejpzvliaHjUVZewNmziCHFSGZXhgIVeZ7fk1Q",
+                "HTTP/1.1"}
+
+[04/Dec/2019:09:03:48 -0000] access to /favicon.ico failed for 45.50.181.228, reason: 
+"httpd_file: Can't access /home/ec2-user/.tsung/log/20191204-0859/favicon.ico: File not found"
+[04/Dec/2019:09:03:48 -0000] access to /assets/ico/favicon.ico failed for 45.50.181.228, reason: 
+"httpd_file: Can't access /home/ec2-user/.tsung/log/20191204-0859/assets/ico/favicon.ico: File not found"
+[04/Dec/2019:09:03:51 -0000] access to /favicon.ico failed for 45.50.181.228, reason: 
+"httpd_file: Can't access /home/ec2-user/.tsung/log/20191204-0859/favicon.ico: File not found"
