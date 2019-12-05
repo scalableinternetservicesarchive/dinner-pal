@@ -16,16 +16,17 @@
 
   <tbody>
     <% @reservations.each do |reservation| %>
-      <tr>
-        <td><%= reservation.listing.title %></td>
-        <td><%= reservation.listing.user.name %></td>
-        <td><%= reservation.listing.location %></td>
-        <td><%= reservation.start_time %></td>
-        <td><%= reservation.end_time %></td>
-        <td><%= link_to 'Show', reservation %></td>
-        <td><%= link_to 'Edit', edit_reservation_path(reservation) %></td>
-        <td><%= button_to "Delete", reservation, :method => "delete", class: "btn btn-danger" %></td>
-      </tr>
+      <% cache(cache_key_for_reservation_row(reservation)) do %>
+        <tr>
+          <td><%= reservation.listing.title %></td>
+          <td><%= reservation.listing.user.name %></td>
+          <td><%= reservation.listing.location %></td>
+          <td><%= reservation.start_time %></td>
+          <td><%= reservation.end_time %></td>
+          <td><%= link_to 'Show', reservation %></td>
+          <td><%= button_to "Delete", reservation, :method => "delete", class: "btn btn-danger" %></td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>
