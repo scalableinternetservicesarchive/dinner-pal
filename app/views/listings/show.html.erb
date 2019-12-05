@@ -1,62 +1,62 @@
-<head>
-  <%= csrf_meta_tags %>
-</head>
+<% cache(cache_key_for_listing_review_table) do %>
+  <head>
+    <%= csrf_meta_tags %>
+  </head>
 
-<p id="notice"><%= notice %></p>
+  <p id="notice"><%= notice %></p>
 
-<h1><%= @listing.title %></h1>
+  <h1><%= @listing.title %></h1>
 
-<hr />
+  <hr />
 
-<p>
-  <div class="row text-center text-lg-left">
-  	<% @listing.images.each do |image| %>
-      <% cache(cache_key_for_listing_image_row(image)) do %>
+  <p>
+    <div class="row text-center text-lg-left">
+    	<% @listing.images.each do |image| %>
         <div class="col-lg-3 col-md-4 col-6">
           <div class="d-block mb-4 h-100">
             <%= image_tag image, :class => 'img-fluid img-thumbnail' %>
           </div>
         </div>
       <% end %>
-    <% end %>
-  </div>
-</p>
+    </div>
+  </p>
 
-<p>
-  Hosted by <%= @listing.user.name %>
-</p>
+  <p>
+    Hosted by <%= @listing.user.name %>
+  </p>
 
-<hr />
+  <hr />
 
-<h2>Location</h2>
-<p>
-  <%= @listing.location %>
-</p>
+  <h2>Location</h2>
+  <p>
+    <%= @listing.location %>
+  </p>
 
 
-<hr />
+  <hr />
 
-<h2>Description</h2>
-<p><%= @listing.description %></p>
+  <h2>Description</h2>
+  <p><%= @listing.description %></p>
 
-<h2>Reviews</h2>
+  <h2>Reviews</h2>
 
-<% if @reviews.length > 0 %>
-    <% @reviews.each do |review| %>
-      <% cache(cache_key_for_listing_review_row(review)) do %>
-        <hr />
-        Reviewer: <%= review.user.name %> <br>
-        Rating: <%= review.rating %> <br>
-        Content: <%= review.content %> <br>
-        <% if review.author_id == current_user.id %>
-          <%= button_to 'Edit', edit_review_path(review), class: "btn btn-primary" %>
-          <%= button_to "Delete", review, :method => "delete", class: "btn btn-danger" %>
+  <% if @reviews.length > 0 %>
+      <% @reviews.each do |review| %>
+        <% cache(cache_key_for_listing_review_row(review)) do %>
+          <hr />
+          Reviewer: <%= review.user.name %> <br>
+          Rating: <%= review.rating %> <br>
+          Content: <%= review.content %> <br>
+          <% if review.author_id == current_user.id %>
+            <%= button_to 'Edit', edit_review_path(review), class: "btn btn-primary" %>
+            <%= button_to "Delete", review, :method => "delete", class: "btn btn-danger" %>
+          <% end %>
         <% end %>
       <% end %>
-    <% end %>
+  <% end %>
+
+  <hr />
+
+  <%= link_to 'Edit', edit_listing_path(@listing) %> |
+  <%= link_to 'Back', listings_path %>
 <% end %>
-
-<hr />
-
-<%= link_to 'Edit', edit_listing_path(@listing) %> |
-<%= link_to 'Back', listings_path %>
