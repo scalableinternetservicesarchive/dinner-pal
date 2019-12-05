@@ -6,7 +6,11 @@ class ListingsController < ApplicationController
   def index
     if stale?([Listing.all, Reservation.all])
       @available_listings = current_user.available_listings
+        .includes(:user)
+        .with_attached_images
       @reserved_listings = current_user.reserved_listings
+        .includes(:user)
+        .with_attached_images
     end
   end
 
@@ -15,6 +19,7 @@ class ListingsController < ApplicationController
   def show
     if stale?([Review.all])
       @reviews = @listing.reviews
+        .includes(:user)
       @current_user = current_user
     end
   end
@@ -73,8 +78,15 @@ class ListingsController < ApplicationController
   def browse
     if params[:query].present?
       @listings = Listing.search_for(params[:query])
+        .page(params[:page])
+        .order('created_at DESC')
+        .includes(:user)
+        .with_attached_images
     else
-      @listings = Listing.all
+      @listings = Listing.page(params[:page])
+        .order('created_at DESC')
+        .includes(:user)
+        .with_attached_images
     end
   end
 

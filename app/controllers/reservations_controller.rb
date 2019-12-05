@@ -6,7 +6,7 @@ class ReservationsController < ApplicationController
   # GET /reservations.json
   def index
     if stale?(Reservation.all)
-      @reservations = current_user.reservations
+      @reservations = current_user.reservations.includes(listing: [:user])
     end
   end
 
