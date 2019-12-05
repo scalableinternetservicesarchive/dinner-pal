@@ -4,15 +4,19 @@ class ListingsController < ApplicationController
   # GET /listings
   # GET /listings.json
   def index
-    @available_listings = current_user.available_listings
-    @reserved_listings = current_user.reserved_listings
+    if stale?([Listing.all, Reservation.all])
+      @available_listings = current_user.available_listings
+      @reserved_listings = current_user.reserved_listings
+    end
   end
 
   # GET /listings/1
   # GET /listings/1.json
   def show
-    @reviews = @listing.reviews
-    @current_user = current_user
+    if stale?([Review.all])
+      @reviews = @listing.reviews
+      @current_user = current_user
+    end
   end
 
   # GET /listings/new

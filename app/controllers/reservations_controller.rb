@@ -5,13 +5,17 @@ class ReservationsController < ApplicationController
   # GET /reservations
   # GET /reservations.json
   def index
-    @reservations = current_user.reservations
+    if stale?(Reservation.all)
+      @reservations = current_user.reservations
+    end
   end
 
   # GET /reservations/1
   # GET /reservations/1.json
   def show
-    @listing_id = @reservation.listing_id
+    if stale?(Reservation.all)
+      @listing_id = @reservation.listing_id
+    end
   end
 
   # GET /reservations/new
