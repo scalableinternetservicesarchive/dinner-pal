@@ -8,31 +8,28 @@
 
 <hr />
 
+<h2>Location</h2>
 <p>
   <div class="row text-center text-lg-left">
   	<% @listing.images.each do |image| %>
-      <% cache(cache_key_for_listing_image_row(image)) do %>
-        <div class="col-lg-3 col-md-4 col-6">
-          <div class="d-block mb-4 h-100">
-            <%= image_tag image, :class => 'img-fluid img-thumbnail' %>
-          </div>
+      <div class="col-lg-3 col-md-4 col-6">
+        <div class="d-block mb-4 h-100">
+          <%= image_tag image, :class => 'img-fluid img-thumbnail' %>
         </div>
-      <% end %>
+      </div>
     <% end %>
   </div>
 </p>
 
 <p>
-  Hosted by <%= @listing.user.name %>
-</p>
 
-<hr />
-
-<h2>Location</h2>
 <p>
   <%= @listing.location %>
 </p>
 
+<p>
+  Hosted by <%= @listing.user.name %>
+</p>
 
 <hr />
 
@@ -43,15 +40,13 @@
 
 <% if @reviews.length > 0 %>
     <% @reviews.each do |review| %>
-      <% cache(cache_key_for_listing_review_row(review)) do %>
-        <hr />
-        Reviewer: <%= review.user.name %> <br>
-        Rating: <%= review.rating %> <br>
-        Content: <%= review.content %> <br>
-        <% if review.author_id == current_user.id %>
-          <%= button_to 'Edit', edit_review_path(review), class: "btn btn-primary" %>
-          <%= button_to "Delete", review, :method => "delete", class: "btn btn-danger" %>
-        <% end %>
+      <hr />
+      Reviewer: <%= review.user.name %> <br>
+      Rating: <%= review.rating %> <br>
+      Content: <%= review.content %> <br>
+      <% if review.author_id == current_user.id %>
+        <%= button_to 'Edit', edit_review_path(review), class: "btn btn-primary" %>
+        <%= button_to "Delete", review, :method => "delete", class: "btn btn-danger" %>
       <% end %>
     <% end %>
 <% end %>
